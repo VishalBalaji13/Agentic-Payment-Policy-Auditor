@@ -1,0 +1,5 @@
+# Core demo (mock mode) needs only streamlit.
+streamlit>=1.33
+
+# Live mode (optional): real Claude calls.
+anthropic>=0.39

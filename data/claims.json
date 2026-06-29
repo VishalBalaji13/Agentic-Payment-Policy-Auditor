@@ -1,0 +1,42 @@
+[
+  {
+    "claim_id": "CLM-1001",
+    "date_of_service": "2026-03-14",
+    "provider_npi": "1234567890",
+    "lines": [
+      { "cpt": "80053", "modifiers": [], "units": 1 },
+      { "cpt": "80048", "modifiers": [], "units": 1 }
+    ],
+    "_note": "Unbundling: basic panel billed alongside comprehensive panel, no modifier. Expect FAIL."
+  },
+  {
+    "claim_id": "CLM-1002",
+    "date_of_service": "2026-03-15",
+    "provider_npi": "1234567890",
+    "lines": [
+      { "cpt": "93000", "modifiers": [], "units": 1 },
+      { "cpt": "93005", "modifiers": ["59"], "units": 1 }
+    ],
+    "_note": "Edit pair with Modifier Indicator 1 and a distinct-procedure modifier present. Expect NEEDS_REVIEW."
+  },
+  {
+    "claim_id": "CLM-1003",
+    "date_of_service": "2026-03-16",
+    "provider_npi": "1234567890",
+    "lines": [
+      { "cpt": "93000", "modifiers": [], "units": 1 },
+      { "cpt": "93005", "modifiers": [], "units": 1 }
+    ],
+    "_note": "Edit pair with Modifier Indicator 1 but no modifier submitted. Expect FAIL."
+  },
+  {
+    "claim_id": "CLM-1004",
+    "date_of_service": "2026-03-17",
+    "provider_npi": "1234567890",
+    "lines": [
+      { "cpt": "80053", "modifiers": [], "units": 1 },
+      { "cpt": "99213", "modifiers": [], "units": 1 }
+    ],
+    "_note": "No active edit pair between these codes. Expect PASS."
+  }
+]
