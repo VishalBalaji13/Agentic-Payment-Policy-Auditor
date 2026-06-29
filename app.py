@@ -4,8 +4,10 @@ Streamlit UI for the Agentic Payment-Policy Auditor.
 Run:
   streamlit run app.py
 
-Use the sidebar to switch between mock mode (no key needed) and live Claude mode.
-The UI is intentionally simple so the agent pipeline, not the front end, is the star.
+The UI runs fully offline (no API key required) so anyone can clone and demo it
+instantly. A live Claude path is available from the CLI: `python -m src.cli --mode
+anthropic`. The UI is intentionally simple so the agent pipeline, not the front
+end, is the star.
 """
 
 import json
@@ -46,19 +48,16 @@ st.caption(
 )
 
 with st.sidebar:
-    st.header("Settings")
-    mode = st.radio(
-        "LLM mode",
-        ["mock", "anthropic"],
-        help="mock runs offline with no API key. anthropic uses live Claude calls.",
-    )
-    if mode == "anthropic" and not os.environ.get("ANTHROPIC_API_KEY"):
-        st.warning("Set ANTHROPIC_API_KEY in your environment for live mode.")
-    st.markdown("---")
-    st.markdown("**Pipeline**")
+    st.header("Pipeline")
     st.markdown(
-        "1. PolicyCompilerAgent\n2. AuditorAgent\n3. CriticAgent (grounding + consistency)"
+        "1. **PolicyCompilerAgent**\n"
+        "2. **AuditorAgent**\n"
+        "3. **CriticAgent** (grounding + consistency)"
     )
+    st.markdown("---")
+    st.caption("Runs fully offline. No API key required.")
+
+mode = "mock"
 
 policy_text = load_text(os.path.join(ROOT, "data", "policies", "ncci_ptp.md"))
 claims = json.loads(load_text(os.path.join(ROOT, "data", "claims.json")))
@@ -112,7 +111,14 @@ with col_right:
             meta[2].metric("Confidence", f"{res.confidence:.2f}")
             if res.citation:
                 with st.expander("Cited policy span"):
-                    st.code(res.citation)
+                    clean_citation = " ".join(res.citation.split())
+                    st.markdown(
+                        "<div style='background:#0d1117;border:1px solid #30363d;"
+                        "border-radius:6px;padding:10px 14px;font-family:monospace;"
+                        "font-size:0.85rem;white-space:normal;word-break:break-word;"
+                        f"color:#c9d1d9'>{clean_citation}</div>",
+                        unsafe_allow_html=True,
+                    )
             if res.critic_issues:
                 for issue in res.critic_issues:
                     st.warning(issue)
