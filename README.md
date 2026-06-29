@@ -65,13 +65,6 @@ python -m src.cli
 streamlit run app.py
 ```
 
-Live mode uses real Claude calls:
-
-```bash
-export ANTHROPIC_API_KEY=sk-...
-python -m src.cli --mode anthropic
-```
-
 ## Sample outcomes
 
 | Claim | Codes | Why | Final |
